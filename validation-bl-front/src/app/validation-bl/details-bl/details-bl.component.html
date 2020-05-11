@@ -1,0 +1,116 @@
+<div>
+  <div class="numero__document">
+    <p>
+      Liste des documents non traité
+    </p>
+  </div>
+  <div>
+    <form #form="ngForm" (submit)="submitFrom(form)">
+      <input
+        type="button"
+        id="btnTraiter"
+        value="Traiter"
+        (click)="onTraiter();"
+        class="btn__traiter"
+      />
+      <input
+        type="submit"
+        id="btnSave"
+        value="Enregistrer"
+        class="btn__save"
+      />
+      <input
+        type="button"
+        id="btnAnnuler"
+        value="Annuler"
+        (click)="onAnnuler(form);"
+        class="btn__annuler"
+      />
+      <input
+        type="button"
+        id="btnSelectAll"
+        value="Sélectionner Tout"
+        (click)="onSelectAll(form)"
+        class="btn__all"
+      />
+
+      <table>
+        <thead>
+          <tr>
+            <th class="table__header">DOC NUMERO</th>
+            <th class="table__header">DOC PIECE</th>
+            <th class="table__header">DOC TYPE</th>
+            <th class="table__header">DATE</th>
+            <th class="table__header">CODE VENDEUR</th>
+            <th class="table__header">NOM VENDEUR</th>
+            <th class="table__header">MONTANT TTC</th>
+            <th class="table__header">DOC STATUT</th>
+            <th class="table__header checked__statut">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr  *ngFor="let doc of documents index as i">
+            <td class="table__td">
+              <span> {{doc.docNumero}} </span>
+              <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.docNumero" name="{{'documents['+i+'].docNumero'}}"/>
+            </td>
+            <td class="table__td">
+              <span> {{doc.docPiece}}</span>
+              <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.docPiece" name="{{'documents['+i+'].docPiece'}}"/>
+            </td>
+            <td class="table__td">
+              <span> {{doc.docStype}}</span>
+              <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.docPiece" name="{{'documents['+i+'].docStype'}}"/>
+            </td>
+            <td class="table__td">
+              <span> Pas encode</span>
+              <input
+                hidden
+                th:field="*{documents[__${itemStat.index}__].DocDate}"
+              />
+            </td>
+            <td class="table__td">
+              <span> {{doc.pcfCode}}</span>
+              <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.pcfCode" name="{{'documents['+i+'].pcfCode'}}"/>
+            </td>
+            <td class="table__td">
+              <span
+                th:text="*{documents[__${itemStat.index}__].nomVendeur}"
+              ></span>
+              <input
+                hidden
+                th:field="*{documents[__${itemStat.index}__].nomVendeur}"
+              />
+            </td>
+            <td class="table__td">
+              <span> {{doc.docMtTtc}}</span>
+              <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.docMtTtc" name="{{'documents['+i+'].docMtTtc'}}"/>
+            </td>
+            <td class="table__td">
+              <span> {{doc.status}}</span>
+              <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.status" name="{{'documents['+i+'].status'}}"/>
+            </td>
+            <td class="table__td checked__statut">
+              <input
+                *ngIf="showAllDocument"
+                type="checkbox"
+                class="check"
+                name="{{'documents['+i+'].isChecked'}}"
+                [checked] = "doc.isChecked"
+                [(ngModel)] ="doc.isChecked"
+                #checkBox = "ngModel"
+                (change)="onChangeCheckbox(checkBox)"/>
+              <!-- 						<input type="checkbox" th:field="*{isChecked}" name="actions" /> -->
+              <!-- 						<input type="checkbox" name="isChecked"  th:value="|${doc.numero}-${doc.isChecked}|" /> -->
+              <!-- 						th:checked="*{isChecked}}" -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+<div *ngIf="isFetching">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+

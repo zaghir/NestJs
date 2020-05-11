@@ -1,0 +1,62 @@
+<div class="loginbox-v4 modal-content-wrapper">
+
+  <div class="loginbox-v4__header">
+    Connectez-vous avec votre compte &nbsp;!
+  </div>
+
+  <div class="alert alert-danger" *ngIf="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="isLoading" style="text-align: center;">
+    <app-loading-spinner></app-loading-spinner>
+
+  </div>
+
+  <div class="loginbox-v4__content">
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+      <div class="manage-fields-wrapper">
+
+        <div class="form-field-container" id="form-item-username" name="form-item-username">
+          <input
+            type="text"
+            name="username"
+            id="username"
+            ngModel
+            required
+            minlength="4"
+            placeholder="User name"
+            data-purpose="username"
+            class="textinput textInput form-control" value="" aria-invalid="true" >
+        </div>
+
+        <div class="form-field-container" id="form-item-password" name="form-item-password">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            ngModel
+            required
+            minlength="6"
+            placeholder="Mot de passe"
+            data-purpose="password"
+            class="textinput textInput form-control" >
+        </div>
+
+        <div class="submit-row">
+          <button
+            [disabled]="!authForm.valid"
+            type="submit"
+            name="submit"
+            value="Se connecter"
+            class="btn btn-primary"
+            id="submit-id-submit"
+            >
+            Login
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
