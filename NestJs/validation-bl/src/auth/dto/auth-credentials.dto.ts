@@ -24,4 +24,5 @@ export class AuthCredentialDto {
   @IsString()
   @IsOptional()
   role?: UserRole;
+  
 }

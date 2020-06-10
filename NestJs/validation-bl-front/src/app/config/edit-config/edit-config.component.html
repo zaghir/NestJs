@@ -1,0 +1,89 @@
+<div class="backdrop"></div>
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+<div class="alert-box">
+  <div class="alert-box-header">
+    <p>Operation pour les configuration </p>
+  </div>
+
+  <div class="alert-box-content">
+    <div>
+        <div id="user-data">
+
+
+          <div class="form-group" *ngIf="action =='add' ">
+            <label for="name">Id</label>
+            <input type="text" id="id" name ="id" class="form-control" [formControlName]="'id'">
+            <span class="help-blok" *ngIf="!configForm.get('id').valid && configForm.get('id').touched">
+              Ajouter un Id  !
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name ="name" class="form-control" [formControlName]="'name'">
+            <span class="help-blok" *ngIf="!configForm.get('name').valid && configForm.get('name').touched">
+              Ajouter le nom  !
+            </span>
+          </div>
+          <div class="form-group" [ngClass]= "{'parcing__json__error' :errorJson == true }">
+            <label for="name">Value</label>
+            <textarea id="value" name ="value" rows="8" cols="50" autocomplete="off" class="form-control" [formControlName]="'value'" (input)="valueChange($event)"></textarea>
+            <span class="help-blok" *ngIf="!configForm.get('value').valid && configForm.get('value').touched" >
+              Ajouter un parametrage  !
+            </span>
+            <span *ngIf="errorJson">Corriger le format de parametrage</span>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" name ="description" class="form-control" [formControlName]="'description'">
+            <span class="help-blok" *ngIf="!configForm.get('description').valid && configForm.get('description').touched">
+              Ajouter une description  !
+            </span>
+          </div>
+
+          <!-- <div class="form-group">
+            <label for="domain">Domain</label>
+            <input type="text" id="domain" name ="domain" class="form-control" [formControlName]="'domain'">
+            <span class="help-blok" *ngIf="!configForm.get('domain').valid && configForm.get('domain').touched">
+              Ajouter une domain  !
+            </span>
+          </div> -->
+
+          <div>
+            <select formControlName="domain" (change)="onDomainChange()">
+              <option [ngValue]="null" disabled>Choisir le domain</option>
+              <option *ngFor="let domain of domains" [value]="domain.id">
+                {{ domain.name }}
+              </option>
+            </select>
+            <div *ngIf="!configForm.get('domain').valid && configForm.get('domain').touched" class="error">
+              Ajouter une domain  !
+            </div>
+          </div>
+
+          <div>
+            <select formControlName="application" (change)="onApplicationChange()">
+              <option [ngValue]="null" disabled>Choisir l'application</option>
+              <option *ngFor="let app of applications" [value]="app.id">
+                {{ app.name }}
+              </option>
+            </select>
+            <div *ngIf="!configForm.get('application').valid && configForm.get('application').touched" class="error">
+              Ajouter l'application  !
+            </div>
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+
+  <div class="alert-box-footer">
+    <a routerLink="/config"class="btn-yz-default" (click)="onSubmit()" style="margin-right:2rem ;">Enregister</a>
+    <a routerLink="/config"class="btn-yz-cancel">Annuler</a>
+  </div>
+</div>
+</form>
+
+

@@ -8,13 +8,14 @@ import {
   UseGuards,
   ParseIntPipe,
   Logger,
+  Query,
 } from '@nestjs/common';
 import { ValidationBlService } from './validation-bl.service';
 import { Document } from './dto/document.dto';
 import { LigneDocument } from './dto/ligne-document.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/auth/user';
-import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from '../auth/user';
+import { GetUser } from '../auth/get-user.decorator';
 
 @Controller('validation-bl')
 @UseGuards(AuthGuard())
@@ -24,20 +25,26 @@ export class ValidationBlController {
   private logger = new Logger('ValidationBlController');
 
   @Get('/documents')
-  getDocuments(@GetUser() user: User): Promise<Document[]> {
-    return this.validationService.getDocuments();
+  getDocuments(    
+    @GetUser() user: User ,
+    @Query() query ): Promise<Document[]> {
+    // this.logger.log("documents ===> User ",JSON.stringify(user));
+    console.log("documents ===> User Query " ,query)
+    return this.validationService.getDocuments(query.connectionName);
   }
 
   @Get('/documents/docLig/:docNumero')
   retrieveLigDocument(
     @Param('docNumero') docNumero: string,
+    @Query() query ,
     @GetUser() user: User,
-  ): Promise<Document> {
-    return this.validationService.retrieveLigDocument(docNumero);
+  ): Promise<LigneDocument> {
+    return this.validationService.retrieveLigDocument(docNumero , query.connectionName);
   }
 
   @Post('/documents')
   insertDocument(
+    @Query() query ,
     @Body() document: Document,
     @GetUser() user: User,
   ): Promise<Document> {
@@ -46,11 +53,12 @@ export class ValidationBlController {
         user.username
       }" creation d un nouveau document => Data: ${JSON.stringify(document)}`,
     );
-    return this.validationService.insertDocument({ ...document });
+    return this.validationService.insertDocument({ ...document } , query.connectionName);
   }
 
   @Post('/documents/lignedocument')
   async insertLigDocument(
+    @Query() query ,
     @Body() ligneDocument: LigneDocument,
     @GetUser() user: User,
   ): Promise<LigneDocument> {
@@ -61,17 +69,18 @@ export class ValidationBlController {
         ligneDocument,
       )}`,
     );
-    return this.validationService.insertLigDocument({ ...ligneDocument });
+    return this.validationService.insertLigDocument({ ...ligneDocument } , query.connectionName);
   }
 
   @Patch('documents/:docNumero')
   async updateDocument(
+    @Query() query ,
     @Param('docNumero', ParseIntPipe) docNumero: number,
     @GetUser() user: User,
   ): Promise<number> {
     this.logger.verbose(
       `User "${user.username}" cmase du document numero : ${docNumero}`,
     );
-    return this.validationService.updateDocument(docNumero);
+    return this.validationService.updateDocument(docNumero , query.connectionName);
   }
 }

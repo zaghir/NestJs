@@ -6,6 +6,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 
 import { User } from './user.model';
 import { PathsApi } from '../shared/config-urls';
+import { DomainDto } from '../domain/dto/domain.dto';
 
 export interface AuthResponseData {
   idToken: string;
@@ -22,31 +23,22 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(username: string, password: string) {
+  signup(username: string , surname: string , lastname: string , email: string , password: string , domains :DomainDto[]){
     return this.http
       .post<AuthResponseData>(
-        PathsApi.singup,
+        PathsApi.signup,
         {
           username: username,
+          surname :surname ,
+          lastname: lastname ,
+          email : email ,
           password: password,
+          role : 0 ,
+          domains: domains
         }
       )
       .pipe(
         catchError(this.handleError),
-        tap(resData => {
-          const payload :any  = JSON.parse(atob(resData.idToken.split('.')[1])) ;
-          this.handleAuthentication(
-            // resData.username,
-            // resData.userId,
-            // resData.idToken,
-            // +resData.expiresIn
-            payload.username,
-            payload.id ,
-            resData.idToken ,
-            +payload.iat,
-            +payload.exp
-          );
-        })
       );
   }
 
@@ -140,20 +132,23 @@ export class AuthService {
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
-    if (!errorRes.error || !errorRes.error.error) {
-      return throwError(errorMessage);
-    }
-    switch (errorRes.error.error.message) {
-      case 'USERNAME_EXISTS':
-        errorMessage = 'Ce username existe deja';
-        break;
-      case 'USERNAME_NOT_FOUND':
-        errorMessage = 'Ce username n existe pas' ;
-        break;
-      case 'INVALID_PASSWORD':
-        errorMessage = 'Le password correct.';
-        break;
-    }
-    return throwError(errorMessage);
+    // if (!errorRes.error || !errorRes.error.error) {
+    //   return throwError(errorRes);
+    // }
+    // switch (errorRes.error.error.message) {
+    //   case 'USERNAME_EXISTS':
+    //     errorMessage = 'Ce username existe deja';
+    //     break;
+    //   case 'USERNAME_NOT_FOUND':
+    //     errorMessage = 'Ce username n existe pas' ;
+    //     break;
+    //   case 'INVALID_PASSWORD':
+    //     errorMessage = 'Le password correct.';
+    //     break;
+    // }
+    // return throwError(errorMessage);
+    if (errorRes.error) {
+        return throwError(errorRes);
+      }
   }
 }

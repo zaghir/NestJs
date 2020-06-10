@@ -1,0 +1,39 @@
+
+<div class="action-component">
+  Liste des  Domains
+</div>
+
+<div>
+  <a
+  routerLink="/domain/edit-domain"
+  [queryParams] ="{action:'add'}"
+  class="btn-yz-default"
+  >Nouveau Domain</a>
+</div>
+<div class="row">
+  <div class="col-md-7 col-xs-12">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of domains index as i">
+          <th scope="row">
+            <a
+            [routerLink]="['/domain' , 'edit-domain']"
+            [queryParams] ="{action:'edit' , id: d.id}"
+            >{{ d.id }}</a></th>
+          <td>{{d.name}}</td>
+          <td>{{d.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+

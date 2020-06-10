@@ -1,1 +1,14 @@
-<p>activity works!</p>
+<div class="action-component">
+  Liste des documents non traité
+</div>
+<div>
+  <div class="list">
+    <div class="list-item" *ngFor="let config of configs">
+      <div class="list-item-content" (click) = "onSelectConfig(config)">
+        <a class="link" (click) = "onSelectConfig(config)" > {{config.domain.name}}</a> </div>
+      </div>
+  </div>
+  <!-- <div>
+    <app-details-bl ></app-details-bl>
+  </div> -->
+</div>

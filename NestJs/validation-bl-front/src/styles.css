@@ -1,1 +1,111 @@
 /* You can add global styles to this file, and also import other style files */
+
+.action-component{
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+  font-weight: 600;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  /* border: solid 1px #8fadcc; */
+  display: inline-block;
+  padding: 2rem;
+}
+
+.btn-yz-default {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  background-color: #eff2ff;
+  border-radius: 5px;
+  border: solid 1px #8fadcc;
+  display: inline-block;
+  padding: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-yz-default:hover {
+  text-decoration: none;
+  background-color: #dbe1fd;
+  color: #000000;
+  transition: background-color 500ms , color 500ms ;
+}
+
+
+.btn-yz-cancel {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  background-color: #fafbff;
+  border-radius: 5px;
+  border: solid 1px #878787;
+  display: inline-block;
+  padding: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  color: #545353;
+}
+
+.btn-yz-cancel:hover {
+  text-decoration: none;
+  background-color:#bfc1c2;
+  color: #000000;
+  transition: background-color 500ms , color 500ms ;
+}
+
+
+
+
+.backdrop{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0 , 0 , 0 ,0.75);
+  z-index: 100;
+}
+
+
+.alert-box{
+  position: fixed;
+  top : 20vh ;
+  left : 30vw ;
+  width: 60vh;
+  z-index: 200;
+  background-color: white;
+  box-shadow: 0px 2px 8px rgba(0 , 0 , 0 ,0.26);
+  border-radius: 8px;
+}
+
+.alert-box .alert-box-header {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: #f8f8f8;
+  border-bottom: solid 1px #919191;
+  border-radius: 5px 5px 0px 0px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.alert-box .alert-box-content {
+  padding: 1rem;
+  background-color: white;
+}
+.alert-box .alert-box-footer{
+  margin-top: 1rem;
+  padding: 1rem;
+  border-top: solid 1px #919191;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: #f8f8f8;
+  border-radius: 0px 0px 5px 5px;
+}
+
+
+.alert-box-action{
+  text-align: center;
+}

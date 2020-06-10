@@ -1,0 +1,7 @@
+.parcing__json__error {
+  border-color: red ;
+}
+
+textarea{
+  resize: none;
+}

@@ -1,0 +1,38 @@
+<div class="action-component">
+  Application
+</div>
+
+<div>
+  <a
+  routerLink="/application/edit-application"
+  [queryParams] ="{action:'add'}"
+  class="btn-yz-default"
+  >Nouvelle Application</a>
+</div>
+<div class="row">
+  <div class="col-md-7 col-xs-12">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of applications index as i">
+          <th scope="row">
+            <a
+            [routerLink]="['/application' , 'edit-application']"
+            [queryParams] ="{action:'edit' , id: app.id}"
+            >{{ app.id }}</a></th>
+          <td>{{app.name}}</td>
+          <td>{{app.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+

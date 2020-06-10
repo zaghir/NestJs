@@ -32,6 +32,7 @@
     "class-validator": "^0.12.2",
     "csurf": "^1.11.0",
     "helmet": "^3.22.0",
+    "mssql": "^6.2.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^8.0.3",

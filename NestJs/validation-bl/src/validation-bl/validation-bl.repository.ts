@@ -2,6 +2,7 @@ import {
   Injectable,
   Logger,
   InternalServerErrorException,
+  Inject
 } from '@nestjs/common';
 import { InjectConnection, InjectEntityManager } from '@nestjs/typeorm';
 import { Connection, EntityManager } from 'typeorm';
@@ -9,6 +10,7 @@ import { dbConnection } from '../config/datasource.config';
 import { queries } from '../config/queries';
 import { Document } from './dto/document.dto';
 import { LigneDocument } from './dto/ligne-document.dto';
+import { DatabaseConfigurationService } from 'src/configuration/datatbase-configuration.service';
 
 @Injectable()
 export class ValidationBlRepository {
@@ -16,22 +18,24 @@ export class ValidationBlRepository {
     @InjectConnection(dbConnection.connexion1.name)
     private connection1: Connection,
     @InjectEntityManager(dbConnection.connexion1.name)
-    private entityManager1: EntityManager,
-    @InjectConnection(dbConnection.connexion2.name)
-    private connection2: Connection,
-    @InjectEntityManager(dbConnection.connexion2.name)
-    private entityManager2: EntityManager,
-  ) {}
+    private entityManager1: EntityManager, 
+    @Inject("DatabaseConfigurationService")   
+    private dbConfig :DatabaseConfigurationService    
+  ) {
+
+  }
 
   private logger = new Logger('ValidationBlRepository');
 
-  async retrieveLigDocument(docNumero: string): Promise<Document> {
+  async retrieveLigDocument(docNumero: string , connectionName : string): Promise<LigneDocument> {
+    const connection = await this.dbConfig.getDatabaseConnectionbyName(connectionName) ;
     try {
-      const document: Document = await this.connection1.query(
+      const document: LigneDocument = await connection.query(
         queries.retrieveLigDocument,
         [docNumero],
       );
-      return document;
+      return this.mapperLigneDocument(document);
+
     } catch (error) {
       this.logger.error(
         `Echec pour la recuperation de docLig avec le numero  "${docNumero}".`,
@@ -41,36 +45,25 @@ export class ValidationBlRepository {
     }
   }
 
-  async retrieveDocuments(): Promise<Document[]> {
-    //const result: Document[] = await this.connection1.query(queries.retrieveDocuments);
-       
-    return await this.connection1.query(queries.retrieveDocuments).then(docs => {
-        const documents : Document[] =[] ; 
-        docs.forEach(doc => {
-            const d :Document = new Document();
-        d.docDate = doc["docdate"] ? doc["docdate"] : null ;
-        d.docMemo = doc["docmemo"] ? doc["docmemo"] : null ;
-        d.docMtTtc = doc["docmtttc"] ? doc["docmtttc"] : null ;
-        d.docNumero = doc["docnumero"] ? doc["docnumero"] : null ;
-        d.docPiece = doc["docpiece"] ? doc["docpiece"] : null ;
-        d.docStype = doc["docstype"] ? doc["docstype"] : null ;
-        d.pcfCode = doc["pcfcode"] ? doc["pcfcode"] : null ;
-        console.log("document ==> " , d);
-        documents.push(d);
-        }) ;
-        return new Promise((resolse , reject) =>{
-            resolse(documents);
-        } ) ;
-    });   
-    // console.log(result);
-    // return documents;
+
+  async retrieveDocuments(connectionName : string ): Promise<Document[]> {
+    console.log('retrieveDocuments -------------> ', connectionName) ;
+    const connection = await this.dbConfig.getDatabaseConnectionbyName(connectionName) ;
+    // const result: Document[] = await this.connection1.query(queries.retrieveDocuments);
+    const result: Document[] = await connection.query(queries.retrieveDocuments);
+    let docs : Document[];
+    docs = result.map((doc) => {
+      return this.mapperDocument(doc);
+    }); 
+    return docs;
   }
 
-  async insertDocument(document: Document): Promise<Document> {
+  async insertDocument(document: Document ,connectionName : string): Promise<Document> {
     console.log('Post Repository ---> ', document);
     const doc: Document = { ...document };
     try {
-      await this.connection1.query(queries.insertDocument, [
+      const connection = await this.dbConfig.getDatabaseConnectionbyName(connectionName) ;
+      await connection.query(queries.insertDocument, [
         doc.docNumero,
         doc.docPiece,
         doc.docStype,
@@ -78,6 +71,8 @@ export class ValidationBlRepository {
         +doc.docMtTtc,
         doc.docMemo,
       ]);
+
+      return doc;
     } catch (error) {
       this.logger.error(
         `Impossible de creer le document "${document.docNumero}". Data: ${document}`,
@@ -85,20 +80,12 @@ export class ValidationBlRepository {
       );
       throw new InternalServerErrorException();
     }
-    return doc;
-    // const result: any = await this.connection1.query(queries.insertDocument, {
-    //     ':docNumero': document.docNumero,
-    //     ':docPiece': document.docPiece,
-    //     ':docStype': document.docStype,
-    //     ':pcfCode': document.pcfCode,
-    //     ':docMtTtc': +document.docMtTtc,
-    //   } as any);
-    //return result ;
   }
 
-  async updateDocument(docNumero: number): Promise<number> {
+  async updateDocument(docNumero: number , connectionName:string ): Promise<number> {
     try {
-      await this.connection1.query(queries.updateDocument, [docNumero]);
+      const connection = await this.dbConfig.getDatabaseConnectionbyName(connectionName) ;
+      await connection.query(queries.updateDocument, [docNumero]);
       return docNumero;
     } catch (error) {
       this.logger.error(
@@ -109,11 +96,10 @@ export class ValidationBlRepository {
     }
   }
 
-  async insertLigDocument(
-    ligneDocument: LigneDocument,
-  ): Promise<LigneDocument> {
+  async insertLigDocument( ligneDocument: LigneDocument, connectionName : string  ): Promise<LigneDocument> {
     try {
-      await this.connection1.query(queries.insertLigDocument, [
+      const connection = await this.dbConfig.getDatabaseConnectionbyName(connectionName) ;
+      await connection.query(queries.insertLigDocument, [
         ligneDocument.docNumero,
         ligneDocument.artCode,
         ligneDocument.ligQte,
@@ -128,5 +114,27 @@ export class ValidationBlRepository {
       );
       throw new InternalServerErrorException();
     }
+  }
+
+  mapperDocument(rs :any) :Document {
+    const d:Document = new Document();
+          // ,doc_f_rs ,  , statut
+    d.docDate = rs["doc_date"] ? rs["doc_date"] : null ;
+    // d.docMemo = rs["docmemo"] ? rs["docmemo"] : null ;
+    d.docMtTtc = rs["doc_mt_ttc"] ? rs["doc_mt_ttc"] : null ;
+    d.docNumero = rs["doc_numero"] ? rs["doc_numero"] : null ;
+    d.docPiece = rs["doc_piece"] ? rs["doc_piece"] : null ;
+    d.docStype = rs["doc_stype"] ? rs["doc_stype"] : null ;
+    d.pcfCode = rs["pcf_code"] ? rs["pcf_code"] : null ;
+    
+    return d ;
+  }
+
+  mapperLigneDocument(rs: any) :LigneDocument{
+    const ligne :LigneDocument= new LigneDocument();
+    ligne.artCode = rs["art_code"] ? rs["art_code"] : null ;
+    ligne.docNumero = rs["doc_numero"] ? rs["doc_numero"] : null ;
+    ligne.ligQte = rs["lig_qte"] ? rs["lig_qte"] : null ;
+    return ligne ;
   }
 }

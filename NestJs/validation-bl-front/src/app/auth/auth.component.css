@@ -71,3 +71,22 @@
   margin: 24px auto;
   max-width: 100%;
 }
+
+.submit-row {
+
+  width: 100%;
+  display: inline-block;
+}
+
+.submit-item {
+  display: inline-block;
+}
+
+.submit-item>a {
+  border: solid 1px #8a92a3;
+  margin-left: 1rem;
+  padding: 0.8rem;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+}

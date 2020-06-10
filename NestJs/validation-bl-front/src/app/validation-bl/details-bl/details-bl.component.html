@@ -1,9 +1,14 @@
+<div class="action-component">
+  Liste des documents non traité
+</div>
+<div class="list">
+  <div class="list-item" >
+    <div class="list-item-content" >
+      <a class="link" routerLink="/validation-bl" > Retour</a> </div>
+    </div>
+</div>
+
 <div>
-  <div class="numero__document">
-    <p>
-      Liste des documents non traité
-    </p>
-  </div>
   <div>
     <form #form="ngForm" (submit)="submitFrom(form)">
       <input
@@ -91,6 +96,7 @@
               <input *ngIf="doc.isChecked" type="text" [(ngModel)]="doc.status" name="{{'documents['+i+'].status'}}"/>
             </td>
             <td class="table__td checked__statut">
+              <div>
               <input
                 *ngIf="showAllDocument"
                 type="checkbox"
@@ -103,6 +109,21 @@
               <!-- 						<input type="checkbox" th:field="*{isChecked}" name="actions" /> -->
               <!-- 						<input type="checkbox" name="isChecked"  th:value="|${doc.numero}-${doc.isChecked}|" /> -->
               <!-- 						th:checked="*{isChecked}}" -->
+              </div>
+              <div>
+                <a (click) = onUpdateDocument(doc)>
+                  <img src="assets/img/icon_save.svg" alt="Enregister" width="20" height="20">
+                </a>
+              </div>
+              <div>
+                <a (click) = onUpdateDocument(doc)>
+                  <img src="assets/img/icon_update.svg" alt="Enregister" width="20" height="20">
+                </a>
+              </div>
+
+            </td>
+            <td>
+
             </td>
           </tr>
         </tbody>

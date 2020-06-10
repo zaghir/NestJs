@@ -18,11 +18,15 @@ export class BlService {
   // saveLigneDocument :`${urlHost}/validation-bl/documents/lignedocument` ,
   // updateDocument :`${urlHost}/validation-bl/documents/:id`,
 
-  getDocuments(): Observable<Document[]> {
+  getDocuments( connectionName :string ): Observable<Document[]> {
+    let params = new HttpParams();
+    params = params.append("connectionName" ,connectionName) ;
+
     return this.http
       .get<Document[]>(PathsApi.getDocuments,
         {
           responseType: "json",
+          params : params
         }
       )
       .pipe(
@@ -36,39 +40,69 @@ export class BlService {
       );
   }
 
-  saveDocument(document: Document) {
+  saveDocument(document: Document , connectionName: string) {
+
+    let params = new HttpParams();
+    params = params.append("connectionName" ,connectionName) ;
 
     return this.http
-      .post(PathsApi.saveDocument, document)
+      .post(
+        PathsApi.saveDocument,
+        document ,
+        {
+          responseType: "json",
+          params : params
+        })
       .subscribe((response) => {
         console.log("saveDocument ===> ",response);
       });
   }
 
-  getDocNumero() {
-    let searchParams = new HttpParams();
-    searchParams.append("id" ,"") ;
+  getDocNumero(connectionName: string) {
+
+    let params = new HttpParams();
+    params = params.append("connectionName" ,connectionName) ;
+    params.append("id" ,"") ;
     return this.http
       .get<Document>(PathsApi.getDocNumero,
         {
           responseType: "json",
-          params :searchParams
+          params :params
 
         }
       );
   }
 
-  saveLigneDocument(ligDoc: LigneDocument) {
+  saveLigneDocument(ligDoc: LigneDocument , connectionName : string) {
+    let params = new HttpParams();
+    params = params.append("connectionName" ,connectionName) ;
+
     return this.http
-      .put(PathsApi.saveLigneDocument, ligDoc)
+      .put(
+        PathsApi.saveLigneDocument,
+        ligDoc ,
+        {
+          responseType: "json",
+          params : params
+        })
       .subscribe((response) => {
         console.log(response);
       });
   }
 
-  updateDocument(idDoc: string) {
+  updateDocument(idDoc: string , connectionName :string) {
+    let params = new HttpParams();
+    params = params.append("connectionName" ,connectionName) ;
+
     return this.http
-      .patch(PathsApi.saveLigneDocument, idDoc)
+      .patch(
+        PathsApi.saveLigneDocument,
+        idDoc,
+        {
+          responseType : "json" ,
+          params:params
+        }
+        )
       .subscribe((response) => {
         console.log(response);
       });

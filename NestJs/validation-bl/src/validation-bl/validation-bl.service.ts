@@ -7,25 +7,23 @@ import { LigneDocument } from './dto/ligne-document.dto';
 export class ValidationBlService {
   constructor(private validatioRepository: ValidationBlRepository) {}
 
-  async getDocuments(): Promise<Document[]> {
-    return this.validatioRepository.retrieveDocuments();
+  async getDocuments(connectionName : string ): Promise<Document[]> {
+    return this.validatioRepository.retrieveDocuments(connectionName);
   }
 
-  async insertDocument(document: Document): Promise<Document> {
-    return this.validatioRepository.insertDocument({ ...document });
+  async insertDocument(document: Document , connectionName : string ): Promise<Document> {
+    return this.validatioRepository.insertDocument({ ...document } , connectionName);
   }
 
-  async retrieveLigDocument(docNumero: string): Promise<Document> {
-    return this.validatioRepository.retrieveLigDocument(docNumero);
+  async retrieveLigDocument(docNumero: string , connectionName :string): Promise<LigneDocument> {
+    return this.validatioRepository.retrieveLigDocument(docNumero ,connectionName);
   }
 
-  async insertLigDocument(
-    ligneDocument: LigneDocument,
-  ): Promise<LigneDocument> {
-    return this.validatioRepository.insertLigDocument({ ...ligneDocument });
+  async insertLigDocument(ligneDocument: LigneDocument , connectionName : string ): Promise<LigneDocument> {
+    return this.validatioRepository.insertLigDocument({ ...ligneDocument } , connectionName);
   }
 
-  async updateDocument(docNumero: number): Promise<number> {
-    return this.validatioRepository.updateDocument(docNumero);
+  async updateDocument(docNumero: number , connectionName : string ): Promise<number> {
+    return this.validatioRepository.updateDocument(docNumero , connectionName);
   }
 }

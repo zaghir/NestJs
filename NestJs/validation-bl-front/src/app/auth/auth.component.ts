@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl } from '@angular/forms';
 import { AuthService , AuthResponseData } from './auth.service';
 import { Observable } from 'rxjs';
+import { DomainService } from '../domain/domain.service';
+import { DomainDto } from '../domain/dto/domain.dto';
 
 @Component({
   selector: 'app-auth',
@@ -11,14 +13,24 @@ import { Observable } from 'rxjs';
 })
 export class AuthComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private domainService : DomainService,
+    private router: Router) {}
 
   isLoading = false;
   isLoginMode = true ;
-  error: string = null;
+  error: string = "";
+  isSingnupMode = false ;
 
+  domains : DomainDto[];
+  domainsControl :FormControl ;
 
   ngOnInit() {
+    this.domainService.getAll().subscribe((ds) => {
+      this.domains = ds ;
+      console.log('list domain ' , this.domains) ;
+    });
   }
 
   onSubmit(form: NgForm) {
@@ -48,8 +60,11 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/']);
       },
       errorMessage => {
-        console.log(errorMessage);
-        this.error = errorMessage;
+        this.error = "";
+        console.log("------------",errorMessage);
+        errorMessage.error.message.forEach(er => {
+          this.error += this.error + er+ '\n';
+        });
         this.isLoading = false;
       }
     );
@@ -57,8 +72,53 @@ export class AuthComponent implements OnInit {
     form.reset();
   }
 
+  switchSigninSingnUp(){
+    this.isSingnupMode = ! this.isSingnupMode ;
+  }
+
+  onSubmitSignup(form: NgForm) {
+    if (!form.valid) {
+      return;
+    }
+    const username = form.value.username;
+    const surname = form.value.surname;
+    const lastname = form.value.lastname;
+    const email = form.value.email ;
+    const password = form.value.password;
+
+    const dns = form.controls['domainsController'].value;
+    console.log("form--------------------" , form);
+    let authObs: Observable<AuthResponseData>;
+
+    this.isLoading = true;
+
+    authObs = this.authService.signup(username , surname , lastname , email , password  , dns);
+
+    authObs.subscribe(
+      resData => {
+        console.log(resData);
+        this.isLoading = false;
+        this.router.navigate(['/auth']);
+        this.isSingnupMode = false;
+      },
+      errorMessage => {
+        this.error = "";
+        this.isLoading = false;
+        console.log('-------------------',errorMessage);
+        errorMessage.error.message.forEach(er => {
+          this.error += this.error + er+ '\n';
+        });
+      }
+    );
+    form.reset();
+  }
+
   onLogout(){
     this.authService.logout();
+  }
+
+  onDomainChange(domain){
+    console.log('onDomainChange ' , domain );
   }
 
 }

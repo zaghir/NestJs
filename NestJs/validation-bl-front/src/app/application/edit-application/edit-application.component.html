@@ -1,0 +1,49 @@
+<div class="backdrop"></div>
+<form [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+<div class="alert-box">
+  <div class="alert-box-header">
+    <p>Application </p>
+  </div>
+
+  <div class="alert-box-content">
+    <div>
+        <div id="user-data">
+
+
+          <div class="form-group" *ngIf="action =='add' ">
+            <label for="name">Id</label>
+            <input type="text" id="id" name ="id" class="form-control" [formControlName]="'id'">
+            <span class="help-blok" *ngIf="!applicationForm.get('id').valid && applicationForm.get('id').touched">
+              Ajouter un Id  !
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name ="name" class="form-control" [formControlName]="'name'">
+            <span class="help-blok" *ngIf="!applicationForm.get('name').valid && applicationForm.get('name').touched">
+              Ajouter le nome de l'application  !
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" name ="description" class="form-control" [formControlName]="'description'">
+            <span class="help-blok" *ngIf="!applicationForm.get('description').valid && applicationForm.get('description').touched">
+              Ajouter une description  !
+            </span>
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+
+  <div class="alert-box-footer">
+    <a routerLink="/application"class="btn-yz-default" (click)="onSubmit()" style="margin-right:2rem ;">Enregister</a>
+    <a routerLink="/application"class="btn-yz-cancel">Annuler</a>
+  </div>
+</div>
+</form>
+
+

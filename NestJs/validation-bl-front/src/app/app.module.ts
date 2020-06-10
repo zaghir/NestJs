@@ -13,6 +13,12 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { ConfigComponent } from './config/config.component';
+import { DomainComponent } from './domain/domain.component';
+import { EditDomainComponent } from './domain/edit-domain/edit-domain.component';
+import { EditConfigComponent } from './config/edit-config/edit-config.component';
+import { ApplicationComponent } from './application/application.component';
+import { EditApplicationComponent } from './application/edit-application/edit-application.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +29,13 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     ActivityComponent,
     DetailsBlComponent,
     DropdownDirective,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ConfigComponent,
+    DomainComponent,
+    EditDomainComponent,
+    EditConfigComponent,
+    ApplicationComponent,
+    EditApplicationComponent
   ],
   imports: [
     BrowserModule,

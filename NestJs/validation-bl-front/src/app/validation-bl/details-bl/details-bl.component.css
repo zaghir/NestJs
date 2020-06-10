@@ -18,7 +18,7 @@ td {
 }
 
 .table__header {
-  background-color: #eaeaea;
+  background-color: #f7f7f7;
   border: solid 1px;
   padding: 0.4rem;
   border-radius: 4px;
@@ -61,4 +61,61 @@ td {
 
 .btn__all {
   background: #fffc7f;
+}
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.list .list-item {
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0 0 1px 1px rgba(20,23,28,.1), 0 3px 1px 0 rgba(20,23,28,.1);
+  color: #505763;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 5rem;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  min-width: 1px;
+  padding: 6px 14px;
+  vertical-align: middle;
+  width: 5rem;
+  flex-basis: calc(10rem - 10px);
+  position: relative;
+  border: none;
+  /* box-shadow: none; */
+}
+
+.list .list-item:hover{
+  background: #fdfdf1;
+  border-color: #cacaa0;
+  transition: background-color 500ms , border-color 800ms ,  opacity 200ms ease-out, transform 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.list .list-item-content {
+  margin: 1rem auto;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.link {
+
+}
+.link:hover {
+  outline: 0;
+  text-decoration: none;
+  cursor: pointer;
 }

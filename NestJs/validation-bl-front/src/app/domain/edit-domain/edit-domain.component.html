@@ -1,0 +1,51 @@
+<div class="backdrop"></div>
+<form [formGroup]="domainForm" (ngSubmit)="onSubmit()">
+<div class="alert-box">
+  <div class="alert-box-header">
+    <p>Operation pour domaine </p>
+  </div>
+
+  <div class="alert-box-content">
+    <div>
+        <div id="user-data">
+
+
+          <div class="form-group" *ngIf="action =='add' ">
+            <label for="name">Id</label>
+            <input type="text" id="id" name ="id" class="form-control" [formControlName]="'id'">
+            <span class="help-blok" *ngIf="!domainForm.get('id').valid && domainForm.get('id').touched">
+              Ajouter un Id  !
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name ="name" class="form-control" [formControlName]="'name'">
+            <span class="help-blok" *ngIf="!domainForm.get('name').valid && domainForm.get('name').touched">
+              Ajouter un nom de domain  !
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" name ="description" class="form-control" [formControlName]="'description'">
+            <span class="help-blok" *ngIf="!domainForm.get('description').valid && domainForm.get('description').touched">
+              Ajouter une description  !
+            </span>
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+
+  <div class="alert-box-footer">
+    <!-- <button class="btn btn-primary" type="submit">Enregister</button>
+    <button class="btn btn-primary" routerLink="/domain">Annuler</button> -->
+    <a routerLink="/domain"class="btn-yz-default" (click)="onSubmit()" style="margin-right:2rem ;">Enregister</a>
+    <a routerLink="/domain"class="btn-yz-cancel">Annuler</a>
+  </div>
+</div>
+</form>
+
+

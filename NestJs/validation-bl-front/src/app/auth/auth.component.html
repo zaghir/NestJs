@@ -14,7 +14,7 @@
   </div>
 
   <div class="loginbox-v4__content">
-    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading  && !isSingnupMode">
       <div class="manage-fields-wrapper">
 
         <div class="form-field-container" id="form-item-username" name="form-item-username">
@@ -25,7 +25,7 @@
             ngModel
             required
             minlength="4"
-            placeholder="User name"
+            placeholder="Identifiant"
             data-purpose="username"
             class="textinput textInput form-control" value="" aria-invalid="true" >
         </div>
@@ -44,19 +44,120 @@
         </div>
 
         <div class="submit-row">
-          <button
-            [disabled]="!authForm.valid"
-            type="submit"
-            name="submit"
-            value="Se connecter"
-            class="btn btn-primary"
-            id="submit-id-submit"
-            >
-            Login
-          </button>
+          <div class="submit-item">
+            <button
+              type="submit" name="submit" id="submit-id-submit"value="Se connecter"
+              [disabled]="!authForm.valid"
+              class="btn btn-primary">
+              Login
+            </button>
+          </div>
+          <div class="submit-item">
+            <a (click)="switchSigninSingnUp()">Sign up</a>
+          </div>
+
         </div>
 
       </div>
     </form>
+
+    <form #signupForm="ngForm" (ngSubmit)="onSubmitSignup(signupForm)" *ngIf="!isLoading && isSingnupMode">
+      <div class="manage-fields-wrapper">
+
+        <div class="form-field-container" id="form-item-username" name="form-item-username">
+          <input type="text" name="username" id="username" placeholder="Identifiant"
+                 ngModel required minlength="4" data-purpose="username"
+                 class="textinput textInput form-control" value="" aria-invalid="true" >
+        </div>
+
+        <div class="form-field-container" id="form-item-username" name="form-item-username">
+          <input type="text" name="surname" id="surname" placeholder="Nom" data-purpose="Nom"
+                ngModel required minlength="4"
+                class="textinput textInput form-control" value="" aria-invalid="true" >
+        </div>
+
+        <div class="form-field-container" id="form-item-username" name="form-item-username">
+          <input type="text" name="lastname" id="lastname" placeholder="Prenom" data-purpose="Prenom"
+                ngModel required minlength="4"
+                class="textinput textInput form-control" value="" aria-invalid="true" >
+        </div>
+
+        <div class="form-field-container" id="form-item-username" name="form-item-username">
+          <input type="email" name="email" id="emaine" placeholder="email" data-purpose="Prenom"
+                ngModel
+                class="textinput textInput form-control" value="" aria-invalid="true" >
+        </div>
+
+        <div class="form-field-container" id="form-item-password" name="form-item-password">
+          <input
+            type="password"
+            name="password"
+            id="password_signup"
+            ngModel
+            required
+            minlength="6"
+            placeholder="Mot de passe"
+            data-purpose="password"
+            class="textinput textInput form-control" >
+        </div>
+
+        <div class="form-field-container" id="form-item-password" name="form-item-password">
+          <input
+            type="password"
+            name="password_checked"
+            id="password_signup"
+            ngModel
+            required
+            minlength="6"
+            placeholder="Confirmer le mot de passe"
+            data-purpose="password"
+            class="textinput textInput form-control" >
+        </div>
+
+        <!-- <div>
+          <select class="form-control"  formControlName="domain" (change)="onDomainChange(signupForm.getControl().get('domain'))">
+            <option [ngValue]="null" disabled>Choisir le domain</option>
+            <option *ngFor="let domain of domains" [value]="domain.id">
+              {{ domain.name }}
+            </option>
+          </select>
+          <div *ngIf="!signupForm.getControl().get('domain').valid && signupForm.getControl().get('domain').touched" class="error">
+            Ajouter une domain  !
+          </div>
+        </div> -->
+
+        <div>
+          <select multiple name="domainsController" ngModel class="form-control" style="height: 10rem;">
+            <option [ngValue]="null" disabled>Choisir les domains</option>
+            <option *ngFor="let domain of domains" [ngValue]="domain">
+              {{ domain.name }}
+            </option>
+          </select>
+          <!-- <div *ngIf="!domainsFormControl..valid && domainsFormControl.touched" class="error">
+            Ajouter un domain  !
+          </div> -->
+        </div>
+
+        <div class="submit-row">
+          <div class="submit-item">
+            <button
+              type="submit" name="submit" id="btn-submit-singup" value="S"
+              [disabled]="!signupForm.valid"
+              class="btn btn-primary">
+              Sign Up
+            </button>
+          </div>
+
+          <div class="submit-item">
+            <div class="submit-item">
+              <a (click)="switchSigninSingnUp()">Login</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+
   </div>
 </div>
