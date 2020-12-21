@@ -75,20 +75,65 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
   Nest is [MIT licensed](LICENSE).
 
 
-```
-# Install Mongo in docker 
-docker run --name mongo -p 27017:27017 -d mongo
+## create project 
+nest new graphql-mongodb
 
-# Install Robo 3T - Connecting to the MongoDB Database 
+## version of nest 
+nest --verison 
 
-```
-
-```
-# version nestJS
-nest --version 
-
-if not version 7 or more write this command
+install last version of nestjs
 npm install @nestjs/cli -g
 
+```
+## Install Mongo in docker 
+docker run --name mongo -p 27017:27017 -d mongo
+
+## Install Robo 3T - Connecting to the MongoDB Database 
+
+## Install driver of mongodb 
+npm install typeorm @nestjs/typeorm mongodb @types/mongodb
+   
+   @nestjs/typeorm  = wrapper 
+   mongodb = driver
+   @types/mongodb = typescript to be easier to work with mongodb
+
+## install uuid to generate id 
+npm install uuid 
+
+## install validator 
+npm install class-validator class-transformer
 
 ```
+
+```
+## install graphql
+npm install graphql graphql-tools apollo-server-express @nestjs/graphql
+
+Should instead be:
+
+npm install graphql@14.6.0 graphql-tools apollo-server-express @nestjs/graphql
+```
+
+```
+## Start application 
+npm run start:dev
+
+```
+
+```
+## Create modules 
+nest g module lesson 
+nest g module student 
+
+## Create service 
+nest g service lesson --no-spec 
+nest g service student --no-spec 
+
+```
+
+```
+## Apollo Url
+http://localhost:3000/graphql
+
+```
+

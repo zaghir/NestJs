@@ -1,3 +1,4 @@
+const schema = "[bl-validation].[dbo].";
 export const queries = {
   retrieveDocuments: `select doc_numero , doc_piece  ,doc_stype , doc_date , pcf_code ,doc_f_rs , doc_mt_ttc , statut from dbo.DOCUMENTS WHERE DOC_TYPE ='v' and DOC_STYPE ='B' and statut is null 
   AND PCF_CODE IN (select PCF_CODE from dbo.tiers where sft_code ='001' and  PCF_VILLE like 'CASA%')`,

@@ -73,22 +73,3 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](LICENSE).
-
-
-```
-# Install Mongo in docker 
-docker run --name mongo -p 27017:27017 -d mongo
-
-# Install Robo 3T - Connecting to the MongoDB Database 
-
-```
-
-```
-# version nestJS
-nest --version 
-
-if not version 7 or more write this command
-npm install @nestjs/cli -g
-
-
-```
